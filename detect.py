@@ -118,7 +118,23 @@ def detect(save_img=False):
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
-                    if save_txt:  # Write to file
+                # 将 xyxy 坐标分解为具体数值
+                x1, y1, x2, y2 = xyxy
+
+                # 计算四个角的坐标
+                top_left = (x1, y1)
+                top_right = (x2, y1)
+                bottom_right = (x2, y2)
+                bottom_left = (x1, y2)
+
+                # 打印这些坐标
+                print(f"Detection: Class: {names[int(cls)]}, Confidence: {conf:.2f}")
+                print(f"Top-Left: {top_left}")
+                print(f"Top-Right: {top_right}")
+                print(f"Bottom-Right: {bottom_right}")
+                print(f"Bottom-Left: {bottom_left}")
+                
+                 if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         line = (cls, *xywh, conf) if opt.save_conf else (cls, *xywh)  # label format
                         with open(txt_path + '.txt', 'a') as f:
